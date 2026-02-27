@@ -28,15 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-
-function generateTierToken(tier: "pro" | "enterprise") {
-  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-  let token = tier === "enterprise" ? "ent_" : "pro_";
-  for (let i = 0; i < 24; i++) {
-    token += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return token;
-}
+import { generateTierToken } from "@/lib/keys";
 
 export function ApiPlayground() {
   const [number, setNumber] = useState("4.8");
