@@ -1,5 +1,7 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { requestToken } from "../toasts";
 
 export function Cta() {
   return (
@@ -19,6 +21,7 @@ export function Cta() {
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Button
             size="lg"
+            onClick={() => requestToken("pro")}
             className="gap-2 bg-primary px-8 text-primary-foreground shadow-[0_0_40px_rgba(56,139,253,0.4)] hover:shadow-[0_0_60px_rgba(56,139,253,0.6)]"
           >
             Get Started for Free
