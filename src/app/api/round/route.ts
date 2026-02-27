@@ -35,6 +35,26 @@ export async function GET(request: Request) {
     );
   }
 
+  // Strict Gatekeeping
+  if (tier === "free" && (methodParam === "ceil" || methodParam === "round")) {
+    return NextResponse.json(
+      {
+        error: `Payment Required: this is a premium feature. Please upgrade your plan.`,
+      },
+      { status: 402 },
+    );
+  }
+
+  if (tier === "pro" && methodParam === "round") {
+    return NextResponse.json(
+      {
+        error: "Payment Required: this requires an Enterprise license.",
+      },
+      { status: 402 },
+    );
+  }
+
+  // Execution
   switch (tier) {
     case "enterprise":
       if (methodParam === "floor") {
@@ -42,7 +62,7 @@ export async function GET(request: Request) {
       } else if (methodParam === "ceil") {
         result = Math.ceil(num);
       } else {
-        result = Math.round(num);
+        result = Math.round(num); // Defaults to true round
       }
       break;
 
@@ -50,13 +70,13 @@ export async function GET(request: Request) {
       if (methodParam === "floor") {
         result = Math.floor(num);
       } else {
-        result = Math.ceil(num);
+        result = Math.ceil(num); // Defaults to ceil
       }
       break;
 
     case "free":
     default:
-      result = Math.floor(num);
+      result = Math.floor(num); // Strictly locked to floor
       break;
   }
 

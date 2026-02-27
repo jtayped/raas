@@ -53,9 +53,7 @@ export function ApiPlayground() {
     try {
       const url = new URL("/api/round", window.location.origin);
       url.searchParams.append("number", number);
-      if (method !== "round") {
-        url.searchParams.append("method", method);
-      }
+      url.searchParams.append("method", method);
 
       const headers: HeadersInit = {};
       if (token) {
