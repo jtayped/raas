@@ -7,7 +7,7 @@ import { requestToken } from "../toasts";
 export default function HeroSection() {
   return (
     <section className="flex min-h-screen items-center justify-center overflow-hidden pt-32">
-      <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center px-6">
+      <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
         {/* Adjusted mobile font size from 4xl to 3xl/sm:text-5xl to handle long words */}
         <h1 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl md:text-7xl">
           Enterprise-Grade

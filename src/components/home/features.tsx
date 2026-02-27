@@ -13,7 +13,7 @@ const features = [
 export default function Features() {
   return (
     <section className="py-32">
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl">
         <div className="mb-16 text-center">
           <Badge
             variant="outline"

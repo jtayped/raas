@@ -32,7 +32,7 @@ const testimonials = [
 export function Testimonials() {
   return (
     <section className="border-y border-border/30 bg-card/10 py-32">
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl">
         <div className="mb-16 text-center">
           <h2 className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl">
             Loved by engineers worldwide.

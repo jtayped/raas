@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 export function Cta() {
   return (
     <section className="py-32">
-      <div className="mx-auto max-w-4xl px-6 text-center">
+      <div className="mx-auto max-w-4xl text-center">
         <h2 className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-6xl">
           Ready to stop rounding
           <br />

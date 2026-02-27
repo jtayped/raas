@@ -11,7 +11,7 @@ const HomePageComponent = () => {
   return (
     <div>
       <Navbar />
-      <main className="px-4">
+      <main className="px-6">
         <HeroSection />
         <Features />
         <ApiPlayground />
