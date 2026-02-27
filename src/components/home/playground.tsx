@@ -111,9 +111,6 @@ export function ApiPlayground() {
               <div className="size-3 rounded-full bg-yellow-500/60" />
               <div className="size-3 rounded-full bg-green-500/60" />
             </div>
-            <span className="font-mono text-xs text-muted-foreground">
-              raas-playground.ts
-            </span>
             <div className="flex items-center gap-2">
               <div className="size-2 rounded-full bg-emerald-500" />
               <span className="text-xs text-muted-foreground">Connected</span>
@@ -233,7 +230,7 @@ export function ApiPlayground() {
             </div>
 
             {/* Right - Response */}
-            <div className="flex flex-col bg-background/30 p-8">
+            <div className="flex flex-col bg-background/30 p-8 overflow-hidden">
               <div className="mb-4 flex items-center justify-between">
                 <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Response
