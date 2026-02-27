@@ -4,7 +4,7 @@ import Features from "./features";
 import { ApiPlayground } from "./playground";
 import { Pricing } from "./pricing";
 import { Testimonials } from "./testimonials";
-import { Cta } from "./ctx";
+import { Cta } from "./cta";
 import { Footer } from "../common/footer";
 
 const HomePageComponent = () => {
