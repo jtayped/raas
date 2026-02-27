@@ -73,6 +73,7 @@ export function ApiPlayground() {
       }
     } catch (err) {
       setError("Failed to connect to the rounding matrix.");
+      console.error(err);
     } finally {
       setLoading(false);
     }

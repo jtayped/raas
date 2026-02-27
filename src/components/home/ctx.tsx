@@ -8,7 +8,7 @@ export function Cta() {
         <h2 className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-6xl">
           Ready to stop rounding
           <br />
-          <span className="bg-gradient-to-r from-primary via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-primary via-blue-400 to-cyan-400 bg-clip-text text-transparent">
             like a caveman?
           </span>
         </h2>
