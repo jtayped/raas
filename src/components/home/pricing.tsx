@@ -2,6 +2,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Check, X } from "lucide-react";
+import { requestToken } from "../toasts";
 
 const tiers = [
   {
@@ -32,7 +33,7 @@ const tiers = [
       { text: "Smart rounding strategies", included: false },
     ],
     cta: "Generate key",
-    function: () => null,
+    function: () => requestToken("pro"),
     highlighted: true,
   },
   {
@@ -49,7 +50,7 @@ const tiers = [
       { text: "Rounding insurance policy", included: true },
     ],
     cta: "Generate key",
-    function: () => console.log("holaa"),
+    function: () => requestToken("enterprise"),
     highlighted: false,
   },
 ];

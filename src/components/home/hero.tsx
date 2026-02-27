@@ -1,6 +1,8 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { API_URL } from "@/constants";
+import { requestToken } from "../toasts";
 
 export default function HeroSection() {
   return (
@@ -24,6 +26,7 @@ export default function HeroSection() {
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
           <Button
             size="lg"
+            onClick={() => requestToken("pro")}
             className="gap-2 bg-primary px-8 text-primary-foreground shadow-[0_0_30px_rgba(56,139,253,0.4)] transition-shadow hover:shadow-[0_0_50px_rgba(56,139,253,0.6)]"
           >
             Get API Key

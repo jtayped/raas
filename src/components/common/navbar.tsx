@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import Logo from "./logo";
+import { requestToken } from "../toasts";
 
 const navLinks = [
   { label: "Docs", href: "#" },
@@ -40,7 +41,11 @@ export function Navbar() {
           <Button variant="ghost" size="sm" className="text-muted-foreground">
             Sign In
           </Button>
-          <Button size="sm" className="bg-primary text-primary-foreground">
+          <Button
+            size="sm"
+            className="bg-primary text-primary-foreground"
+            onClick={() => requestToken("pro")}
+          >
             Get API Key
           </Button>
         </div>
@@ -78,6 +83,7 @@ export function Navbar() {
               <Button
                 size="sm"
                 className="w-full bg-primary text-primary-foreground"
+                onClick={() => requestToken("pro")}
               >
                 Get API Key
               </Button>
