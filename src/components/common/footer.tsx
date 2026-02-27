@@ -1,3 +1,5 @@
+import Logo from "./logo";
+
 const footerLinks = {
   Product: [
     "API Docs",
@@ -23,14 +25,8 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-5">
           <div className="md:col-span-1">
             <div className="flex items-center gap-2">
-              <div className="flex size-8 items-center justify-center rounded-lg bg-primary">
-                <span className="font-mono text-sm font-bold text-primary-foreground">
-                  R
-                </span>
-              </div>
-              <span className="font-mono text-lg font-bold text-foreground">
-                RaaS
-              </span>
+              <Logo />
+              <span className="text-lg font-bold text-foreground">RaaS</span>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               Enterprise-grade decimal management for the modern web.
