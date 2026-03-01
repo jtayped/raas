@@ -1,7 +1,8 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { requestToken } from "../toasts";
+import Link from "next/link";
 
 export function Cta() {
   return (
@@ -31,8 +32,15 @@ export function Cta() {
             variant="outline"
             size="lg"
             className="border-border/50 px-8 text-foreground"
+            asChild
           >
-            Schedule a Demo
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href={"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
+            >
+              Schedule a Demo
+            </Link>
           </Button>
         </div>
       </div>
