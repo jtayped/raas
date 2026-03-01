@@ -59,7 +59,7 @@ export function ApiPlayground() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data);
+        setError({ code: res.status, ...data });
       } else {
         setResult(data);
       }
@@ -240,7 +240,7 @@ export function ApiPlayground() {
               <div className="flex-1 rounded-lg border border-border/30 bg-background/50 p-4 font-mono text-sm">
                 {error && (
                   <pre className="overflow-x-auto text-xs leading-6 text-red-400">
-                    {JSON.stringify({ error, status: 401 }, null, 2)}
+                    {JSON.stringify(error, null, 2)}
                   </pre>
                 )}
 

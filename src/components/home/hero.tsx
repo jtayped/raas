@@ -8,7 +8,6 @@ export default function HeroSection() {
   return (
     <section className="flex min-h-screen items-center justify-center overflow-hidden pt-32">
       <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
-        {/* Adjusted mobile font size from 4xl to 3xl/sm:text-5xl to handle long words */}
         <h1 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl md:text-7xl">
           Enterprise-Grade
           <br />
@@ -18,10 +17,9 @@ export default function HeroSection() {
         </h1>
 
         <p className="mt-6 max-w-2xl text-pretty text-sm sm:text-md leading-relaxed text-muted-foreground md:text-xl">
-          Stop leaving your integers to chance.{" "}
-          <span className="text-foreground">RaaS (Rounding-as-a-Service)</span>{" "}
-          provides secure, blazingly fast, cloud-native number rounding for
-          modern engineering teams.
+          Stop leaving your integers to chance. As the industry leader in RaaS
+          (Rounding-as-a-Service), we provide secure, blazingly fast,
+          cloud-native decimal mitigation for modern engineering teams.
         </p>
 
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
@@ -57,7 +55,6 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Terminal preview */}
         <div className="mt-5 md:mt-12 w-full max-w-2xl overflow-hidden rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm">
           <div className="flex items-center gap-2 border-b border-border/50 px-4 py-3">
             <div className="size-3 rounded-full bg-red-500/60" />
@@ -70,14 +67,26 @@ export default function HeroSection() {
           <div className="p-6 text-left font-mono text-sm">
             <p className="text-muted-foreground">
               <span className="text-emerald-400">$</span>{" "}
-              {`curl -X GET ${API_URL}?number=3.65 \\`}
+              {`curl -X GET "${API_URL}?number=3.65&method=smart" \\`}
             </p>
             <p className="pl-4 text-muted-foreground">
-              {'-H "Authorization: Bearer pro_123..." \\'}
+              {'-H "Authorization: Bearer ent_8f92a1b" \\'}
             </p>
-            <p className="mt-4 text-emerald-400">
-              {'{"original_value":3.65,"rounded_value":3}'}
-            </p>
+            <pre className="mt-4 text-emerald-400 overflow-x-auto">
+              {`{
+  "status": "success",
+  "data": {
+    "original_value": 3.65,
+    "rounded_value": 4,
+    "precision_loss": 0.35
+  },
+  "metadata": {
+    "algorithm_used": "Smart Rounding™",
+    "computation_time_ms": 112.45,
+    "is_integer": true
+  }
+}`}
+            </pre>
           </div>
         </div>
       </div>

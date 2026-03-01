@@ -1,3 +1,4 @@
+"use client";
 import Logo from "./logo";
 
 const footerLinks = {
@@ -5,17 +6,29 @@ const footerLinks = {
     "API Docs",
     "Playground",
     "Changelog",
-    "Uptime Status",
-    "Rounding Blog",
+    "Precision Loss Analytics",
+    "Legacy Floor Support",
   ],
-  Company: ["About", "Careers (We're Hiring!)", "Press Kit", "Brand Assets"],
+  Company: [
+    "About",
+    "Careers (Hiring 10x Rounders)",
+    "Investor Relations (Series E)",
+    "Press Kit",
+  ],
   Legal: [
     "Terms of Rounding",
     "Privacy Policy",
     "Cookie Rounding Policy",
     "GDPR Compliance",
+    "Fractional Data Brokerage",
   ],
-  Community: ["Discord", "GitHub", "Stack Overflow", "Rounding Conf 2026"],
+  Community: [
+    "Discord",
+    "GitHub",
+    "Stack Overflow",
+    "Rounding Conf 2026",
+    "r/RaaS",
+  ],
 };
 
 export function Footer() {
@@ -31,8 +44,9 @@ export function Footer() {
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               Enterprise-grade decimal management for the modern web.
             </p>
+            {/* Swapped standard versioning for a Pi reference */}
             <p className="mt-4 font-mono text-xs text-muted-foreground/50">
-              v4.2.0
+              v3.14.15-rc.9
             </p>
           </div>
 
@@ -47,6 +61,14 @@ export function Footer() {
                     <a
                       href="#"
                       className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (link === "Careers (Hiring 10x Rounders)") {
+                          console.log(
+                            "Must have 15 years of experience with Math.floor() to apply.",
+                          );
+                        }
+                      }}
                     >
                       {link}
                     </a>
@@ -60,12 +82,13 @@ export function Footer() {
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border/30 pt-8 md:flex-row">
           <p className="text-xs text-muted-foreground">
             {"\u00A9"} 2026 RaaS, Inc. All rights reserved. No decimals were
-            harmed in the making of this product.
+            harmed in the making of this product. Any resemblance to actual
+            mathematics is purely coincidental.
           </p>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <span>System Status:</span>
-            <div className="size-2 rounded-full bg-emerald-500" />
-            <span className="text-emerald-400">All systems operational</span>
+            <div className="size-2 animate-pulse rounded-full bg-emerald-500" />
+            <span className="text-emerald-400">All integers stable</span>
           </div>
         </div>
       </div>

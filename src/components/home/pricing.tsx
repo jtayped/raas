@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Check, X } from "lucide-react";
 import { requestToken } from "../toasts";
+import { ROUNDING_TERMS } from "@/constants";
 
 const tiers = [
   {
@@ -11,10 +12,11 @@ const tiers = [
     period: "",
     description: "For individuals who round occasionally.",
     features: [
-      { text: "Rounding down only", included: true },
+      { text: `Includes ${ROUNDING_TERMS.settle}`, included: true },
+      { text: "Standard precision loss", included: true },
       { text: "Community support (Reddit)", included: true },
-      { text: "Rounding up numbers", included: false },
-      { text: "Custom rounding strategies", included: false },
+      { text: ROUNDING_TERMS.elevate, included: false },
+      { text: ROUNDING_TERMS.smart, included: false },
     ],
     cta: "Start Free",
     function: () => console.log("holaa"),
@@ -27,10 +29,10 @@ const tiers = [
     description: "For teams serious about decimal precision.",
     features: [
       { text: "10,000 rounds/month", included: true },
-      { text: "All rounding methods", included: true },
+      { text: `Unlock ${ROUNDING_TERMS.elevate}`, included: true },
       { text: "Rounding audit logs", included: true },
-      { text: "99.9% SLA", included: true },
-      { text: "Smart rounding strategies", included: false },
+      { text: "Priority latency (+40ms faster)", included: true },
+      { text: ROUNDING_TERMS.smart, included: false },
     ],
     cta: "Generate key",
     function: () => requestToken("pro"),
@@ -43,9 +45,8 @@ const tiers = [
     description: "For organizations that demand rounding excellence.",
     features: [
       { text: "Unlimited rounds", included: true },
-      { text: "All rounding methods", included: true },
-      { text: "24/7 dedicated support", included: true },
-      { text: "Custom rounding strategies", included: true },
+      { text: `Includes ${ROUNDING_TERMS.smart}`, included: true },
+      { text: "Zero-Day fractional mitigation", included: true },
       { text: "On-premise deployment", included: true },
       { text: "Rounding insurance policy", included: true },
     ],
