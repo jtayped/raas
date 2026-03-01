@@ -1,22 +1,37 @@
+import { ROUNDING_METHODS, ROUNDING_TERMS } from "@/constants";
+import { RoundingMethods } from "@/types/api";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
+  const startTime = performance.now();
+
   const { searchParams } = new URL(request.url);
   const numberParam = searchParams.get("number");
-  const methodParam = searchParams.get("method");
+  const methodParam = (searchParams.get("method") ??
+    "settle") as RoundingMethods;
 
   const authHeader = request.headers.get("authorization");
   const apiKey =
     authHeader && authHeader.startsWith("Bearer ")
       ? authHeader.substring(7)
-      : "";
+      : "free_tier";
+
+  if (numberParam === "apple" || numberParam === "banana") {
+    return NextResponse.json(
+      {
+        error: "Cannot apply mathematical truncation to fruit.",
+      },
+      { status: 418 },
+    );
+  }
 
   if (!numberParam || isNaN(Number(numberParam))) {
     return NextResponse.json(
       {
-        error: "Bad Request: Please provide a valid 'number' query parameter.",
+        error:
+          "Unprocessable Entity: Please provide a compliant 'number' query parameter.",
       },
-      { status: 400 },
+      { status: 422 },
     );
   }
 
@@ -28,60 +43,74 @@ export async function GET(request: Request) {
     tier = "enterprise";
   } else if (apiKey.startsWith("pro_")) {
     tier = "pro";
-  } else if (apiKey.length > 0) {
+  } else if (apiKey.startsWith("free_") || apiKey === "free_tier") {
+    tier = "free";
+  } else {
     return NextResponse.json(
-      { error: "Unauthorized: Invalid API key. Please upgrade your plan." },
+      {
+        error: "Unauthorized: Invalid or deprecated Bearer token.",
+      },
       { status: 401 },
     );
   }
 
-  // Strict Gatekeeping
-  if (tier === "free" && (methodParam === "ceil" || methodParam === "round")) {
+  // Check if the method even exists
+  if (!ROUNDING_METHODS.includes(methodParam)) {
     return NextResponse.json(
       {
-        error: `Payment Required: this is a premium feature. Please upgrade your plan.`,
+        error: `Bad Request: '${methodParam}' is not a recognized corporate rounding strategy. Try: ${ROUNDING_METHODS.join(", ")}.`,
+      },
+      { status: 400 },
+    );
+  }
+
+  // Map tiers to their paid features
+  const tierPermissions: Record<string, Array<RoundingMethods>> = {
+    free: ["settle"],
+    pro: ["settle", "elevate"],
+    enterprise: ["settle", "elevate", "smart"],
+  };
+
+  // Throws 402 if they try to use a method they haven't paid for
+  if (
+    !tierPermissions[tier as keyof typeof tierPermissions].includes(methodParam)
+  ) {
+    return NextResponse.json(
+      {
+        error: `The '${methodParam}' algorithm is locked behind a higher paywall.`,
       },
       { status: 402 },
     );
   }
 
-  if (tier === "pro" && methodParam === "round") {
-    return NextResponse.json(
-      {
-        error: "Payment Required: this requires an Enterprise license.",
-      },
-      { status: 402 },
-    );
+  if (methodParam === "smart") {
+    result = Math.round(num);
+  } else if (methodParam === "elevate") {
+    result = Math.ceil(num);
+  } else {
+    result = Math.floor(num);
   }
 
-  // Execution
-  switch (tier) {
-    case "enterprise":
-      if (methodParam === "floor") {
-        result = Math.floor(num);
-      } else if (methodParam === "ceil") {
-        result = Math.ceil(num);
-      } else {
-        result = Math.round(num); // Defaults to true round
-      }
-      break;
-
-    case "pro":
-      if (methodParam === "floor") {
-        result = Math.floor(num);
-      } else {
-        result = Math.ceil(num); // Defaults to ceil
-      }
-      break;
-
-    case "free":
-    default:
-      result = Math.floor(num); // Strictly locked to floor
-      break;
-  }
+  const algorithmName = ROUNDING_TERMS[methodParam];
+  const precisionLoss = Math.abs(num - result);
+  const fakeLatency = Math.random() * 80 + 40;
+  const computationTimeMs = (
+    performance.now() -
+    startTime +
+    fakeLatency
+  ).toFixed(2);
 
   return NextResponse.json({
-    original_value: num,
-    rounded_value: result,
+    status: "success",
+    data: {
+      original_value: num,
+      rounded_value: result,
+      precision_loss: Number(precisionLoss.toFixed(10)),
+    },
+    metadata: {
+      algorithm_used: algorithmName,
+      computation_time_ms: Number(computationTimeMs),
+      is_integer: Number.isInteger(result),
+    },
   });
 }
