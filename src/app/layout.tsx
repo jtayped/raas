@@ -40,6 +40,13 @@ export const metadata: Metadata = {
     description:
       "Because paying $99/mo to round numbers builds character. Secure, SOC-2 compliant decimal truncation.",
     siteName: "RaaS",
+    images: [
+      {
+        url: "https://raas.joeltaylor.business/og-image.png",
+        width: 1200,
+        height: 631,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
