@@ -13,7 +13,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Lock,
   Copy,
   Check,
   Loader2,
@@ -29,25 +28,21 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { generateTierToken } from "@/lib/keys";
+import { RoundingMethods } from "@/types/api";
+import { ROUNDING_METHODS, ROUNDING_TERMS } from "@/constants";
 
 export function ApiPlayground() {
   const [number, setNumber] = useState("4.8");
-  const [method, setMethod] = useState("floor");
+  const [method, setMethod] = useState<RoundingMethods>("settle");
   const [token, setToken] = useState("");
   const [result, setResult] = useState<undefined | object>(undefined);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<object | null>(null);
 
   const handleRound = useCallback(async () => {
     setError(null);
     setResult(undefined);
-
-    if (!number || isNaN(Number(number))) {
-      setError("Please enter a valid number.");
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -64,13 +59,12 @@ export function ApiPlayground() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "An unknown error occurred.");
+        setError(data);
       } else {
-        // Just save the exact API response
         setResult(data);
       }
     } catch (err) {
-      setError("Failed to connect to the rounding matrix.");
+      setError({ message: "Failed to connect to the rounding matrix." });
       console.error(err);
     } finally {
       setLoading(false);
@@ -137,26 +131,19 @@ export function ApiPlayground() {
                 <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Rounding Method
                 </label>
-                <Select value={method} onValueChange={setMethod}>
+                <Select
+                  value={method}
+                  onValueChange={(value) => setMethod(value as RoundingMethods)}
+                >
                   <SelectTrigger className="w-full border-border/50 bg-background/50 font-mono text-foreground">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="floor">
-                      <span className="font-mono">Flooring</span>
-                    </SelectItem>
-                    <SelectItem value="ceil">
-                      <span className="flex items-center gap-2 font-mono">
-                        Ceiling
-                        <Lock className="size-3 text-muted-foreground" />
-                      </span>
-                    </SelectItem>
-                    <SelectItem value="round">
-                      <span className="flex items-center gap-2 font-mono">
-                        Smart Round™
-                        <Lock className="size-3 text-muted-foreground" />
-                      </span>
-                    </SelectItem>
+                    {ROUNDING_METHODS.map((r) => (
+                      <SelectItem value={r} key={r}>
+                        <span className="font-mono">{ROUNDING_TERMS[r]}</span>
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
