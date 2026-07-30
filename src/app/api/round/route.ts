@@ -1,5 +1,11 @@
-import { ROUNDING_METHODS, ROUNDING_TERMS } from "@/constants";
-import { RoundingMethods } from "@/types/api";
+import {
+  PURCHASABLE_PREFIXES,
+  ROUNDING_METHODS,
+  ROUNDING_TERMS,
+  TIER_PERMISSIONS,
+  TIER_PREFIXES,
+} from "@/constants";
+import { RoundingMethods, Tiers } from "@/types/api";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
@@ -37,18 +43,22 @@ export async function GET(request: Request) {
 
   const num = Number(numberParam);
   let result;
-  let tier = "free";
 
-  if (apiKey.startsWith("ent_")) {
-    tier = "enterprise";
-  } else if (apiKey.startsWith("pro_")) {
-    tier = "pro";
-  } else if (apiKey.startsWith("free_") || apiKey === "free_tier") {
-    tier = "free";
-  } else {
+  /* Derived from TIER_PREFIXES rather than a hand-written ladder, so a new
+     tier is one entry in one object and cannot be added to the permissions
+     table while remaining unauthenticable.
+     No prefix here is a prefix of another, so first match wins safely. If
+     one ever is, order this longest-first. The "free_tier" placeholder used
+     when no header arrives matches free_ on its own. */
+  const tier = (Object.keys(TIER_PREFIXES) as Tiers[]).find((candidate) =>
+    apiKey.startsWith(TIER_PREFIXES[candidate]),
+  );
+
+  if (!tier) {
     return NextResponse.json(
       {
         error: "Unauthorized: Invalid or deprecated Bearer token.",
+        purchasable_prefixes: PURCHASABLE_PREFIXES,
       },
       { status: 401 },
     );
@@ -64,17 +74,8 @@ export async function GET(request: Request) {
     );
   }
 
-  // Map tiers to their paid features
-  const tierPermissions: Record<string, Array<RoundingMethods>> = {
-    free: ["settle"],
-    pro: ["settle", "elevate"],
-    enterprise: ["settle", "elevate", "smart"],
-  };
-
   // Throws 402 if they try to use a method they haven't paid for
-  if (
-    !tierPermissions[tier as keyof typeof tierPermissions].includes(methodParam)
-  ) {
+  if (!TIER_PERMISSIONS[tier].includes(methodParam)) {
     return NextResponse.json(
       {
         error: `The '${methodParam}' algorithm is locked behind a higher paywall.`,
@@ -87,6 +88,10 @@ export async function GET(request: Request) {
     result = Math.round(num);
   } else if (methodParam === "elevate") {
     result = Math.ceil(num);
+  } else if (methodParam === "abstain") {
+    /* The premium feature is that it does nothing. The number was already
+       fine and rounding it was always the customer's idea. */
+    result = num;
   } else {
     result = Math.floor(num);
   }
@@ -111,6 +116,16 @@ export async function GET(request: Request) {
       algorithm_used: algorithmName,
       computation_time_ms: Number(computationTimeMs),
       is_integer: Number.isInteger(result),
+      tier,
+      /* Gated on the method rather than the tier, because the fourth tier
+         can still call the other three algorithms and those do round. A
+         note claiming otherwise while precision_loss sat above zero two
+         lines up would be the one wrong fact in the response. */
+      ...(methodParam === "abstain"
+        ? {
+            note: "this method does not round. the number was already fine. joeltaylor.business",
+          }
+        : {}),
     },
   });
 }
